@@ -387,9 +387,9 @@ For a given ordered pair of arriving trip and departing trip, the transfer with 
 
 The following applies to `transfer_type` 4 and 5 that are linking trips together with or without in-seats transfers. 
 
-Using this transfer type REQUIRES that the the two trips linked are operated by the same vehicle. 
+Using this transfer type REQUIRES that the two trips linked are operated by the same vehicle. 
 
-Additionally, the last stop of `from_trip_id` SHOULD be geographically close from the first stop `to_trip_id` and the last arrival time of `from_trip_id` SHOULD be prior but close to the first departure time of `to_trip_id`. The last arrival time of `from_trip_id` MAY be later than the first departure time of `to_trip_id` in case the `to_trip_id` trip is occurring the subsequent service day. 
+Additionally, the last stop of `from_trip_id` SHOULD be geographically close to the first stop `to_trip_id` and the last arrival time of `from_trip_id` SHOULD be prior but close to the first departure time of `to_trip_id`. The last arrival time of `from_trip_id` MAY be later than the first departure time of `to_trip_id` in case the `to_trip_id` trip is occurring the subsequent service day. 
 
 Trip can be linked 1 to 1 in the regular case when a bus continues from one line to an other or other simple continuations. However, trips can also be linked n to n in more complex cases. For example, two trains trips can merge in a single trips that continues into a single trains as shown below. As shown in the diagram below, Trip A and B could meet in a common station and depart together at the same time creating Trip C. The transfers in this case would be from trip A to C and B to C. 
 
