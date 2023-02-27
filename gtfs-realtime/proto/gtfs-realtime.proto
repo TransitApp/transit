@@ -1103,7 +1103,7 @@ message TripModifications {
   repeated string trip_ids = 2;
 
   // Dates on which the detour occurs, in the YYYYMMDD format. Producers SHOULD only transmit detours occurring within the next week.
-  repeated uint32 service_dates = 3;
+  repeated string service_dates = 3;
 
   // The ID of the new shape for the modified trips. May refer to a new shape added using a GTFS-RT Shape message, or to an existing shape defined in the GTFS-Static feed’s shapes.txt.
   optional string shape_id = 4;
