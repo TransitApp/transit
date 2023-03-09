@@ -1124,7 +1124,7 @@ message TripModifications {
 message ReplacementStop {
   // The difference in seconds between the arrival time at this stop and the arrival time at the reference stop. The reference stop is the stop prior to start_stop_sequence. If the modification begins at the first stop of the trip, then the first stop of the trip is the reference stop.
   // This value MUST be monotonically increasing and may only be a negative number if the first stop of the original trip is the reference stop.
-  required int32 travel_time_to_stop = 1;
+  optional int32 travel_time_to_stop = 1 [default = 0];
 
   // The replacement stop ID which will now be visited by the trip. May refer to a new stop added using a GTFS-RT Stop message, or to an existing stop defined in the GTFS-Static feed’s stops.txt. The stop MUST have location_type=0 (routable stops).
   required string stop_id = 2;
