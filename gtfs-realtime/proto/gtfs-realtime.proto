@@ -1077,6 +1077,12 @@ message TripModifications {
     // A list of replacement stops, replacing those of the original trip. The length of the new stop times may be less, the same, or greater than the number of replaced stop times. 
 		repeated ReplacementStop replacement_stops = 4;
 
+    // If the modification is operated on a different vehicle, you can specify it here (E.g. : a train trip modified by a bus bridge)
+    // If specified, the modification MUST include replacement_stops (one near the start of the modification and one near the end of the modification)
+    // In this case, the user will be assumed to disembark the original vehicle at the start_stop_sequence and board the replacement vehicle at the first replacement_stop
+    // (and vice versa at the end of the modification)
+    optional ReplacementVehicle replacement_vehicle = 5;
+
 		// The extensions namespace allows 3rd-party developers to extend the
 		// GTFS Realtime Specification in order to add and evaluate new features and
 		// modifications to the spec.
@@ -1100,6 +1106,30 @@ message TripModifications {
 
   // A list of modifications to apply to the affected trips. 
   repeated Modification modifications = 5; 
+
+  // The extensions namespace allows 3rd-party developers to extend the
+  // GTFS Realtime Specification in order to add and evaluate new features and
+  // modifications to the spec.
+  extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
+}
+
+message ReplacementVehicle {
+  // The route type of the replacement vehicle. If not specified, the route type of the original trip will be used.
+  optional int32 route_type = 1;
+
+  // If the replacement vehicle is not following the schedule from the original trip, a new headway can be specified.
+  // The service is assumed to run from the arrival_time of the first modified trip at the start_stop_sequence to the arrival_time of the last modified trip at the start_stop_sequence.
+  optional int32 headway_secs = 2;
+
+  // Transfer time from and to the first and last stop of the modification, if required.
+  // TODO : ability to specify the full transfers.txt capabilities 
+  optional int32 to_first_replacement_stop_transfer_time = 3;
+  optional int32 from_last_replacement_stop_transfer_time = 4;
+
+  // TODO add definition on how trip_id is modified for replacement vehicle. 
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
