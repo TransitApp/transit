@@ -1103,7 +1103,10 @@ message TripModifications {
 		extensions 9000 to 9999;
 	}
 
-   // A list of trips affected by this detour. All trips linked by those trip_ids MUST have the same stop pattern. Two trips have the same stop pattern, if they visit the same stops in the same order, and have identical stop sequences.
+   // A list of trips affected by this detour. 
+   // If `start_stop_sequence` is used to target the start of the modificaiton, all trips linked by those trip_ids MUST have the same stop pattern. 
+   // Two trips have the same stop pattern, if they visit the same stops in the same order, and have identical stop sequences.
+   // If `start_stop_id` is used to target the start of the modification, the stop pattern of the trips is not required to be the same.
   repeated string trip_ids = 2;
 
   // Dates on which the detour occurs, in the YYYYMMDD format. Producers SHOULD only transmit detours occurring within the next week.
