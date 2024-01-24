@@ -1074,11 +1074,11 @@ message Stop {
 
 message TripModifications {
 	message Modification {
-    // The first stop sequence of the original trip that is to be affected by this modification.
-		optional uint32 start_stop_sequence = 1;
-
-    // The number of stops which are canceled and replaced by the replacement_stops. May be zero to indicate no skipped stops.
-		optional uint32 num_stops_replaced = 2;
+    // A list of stop_id that are affected by this modification
+    // The list of stop_ids must be large enough to be unambiguous. Ex : in a loop route where stop_ids are repeated, the list of stop_ids must include stops before and/or after the repeated stops. 
+    // Similary, if a modification affects a trip without having cancelled stops, the list should target at least a stop before the modification location. 
+    // In cases where stops are selected in the target_stop_ids but are not cancelled, they must be re-introduced without modificaiton in the replacement_stops list
+    repeated string target_stop_ids = 1;
 
     // The number of seconds of delay to add to all departure and arrival times following the end of this modification. If multiple modifications apply to the same trip, the delays accumulate as the trip advances. 
 		optional int32 propagated_modification_delay = 3 [default = 0];
@@ -1098,7 +1098,7 @@ message TripModifications {
 		extensions 9000 to 9999;
 	}
 
-   // A list of trips affected by this detour. All trips linked by those trip_ids MUST have the same stop pattern. Two trips have the same stop pattern, if they visit the same stops in the same order, and have identical stop sequences.
+   // A list of trips affected by this detour.
   repeated string trip_ids = 2;
 
   // Dates on which the detour occurs, in the YYYYMMDD format. Producers SHOULD only transmit detours occurring within the next week.
