@@ -121,7 +121,7 @@ Determines whether the current fetch is incremental.
 
 ## _message_ FeedEntity
 
-A definition (or update) of an entity in the transit feed. If the entity is not being deleted, exactly one of 'trip_update', 'vehicle', 'alert' and 'shape' fields should be populated.
+A definition (or update) of an entity in the transit feed. If the entity is not being deleted, exactly one of 'trip_update', 'vehicle', 'alert', 'shape', 'stop' or 'trip_modification' fields should be populated.
 
 **Fields**
 
