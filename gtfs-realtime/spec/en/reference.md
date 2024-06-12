@@ -133,6 +133,8 @@ A definition (or update) of an entity in the transit feed. If the entity is not 
 | **vehicle** | [VehiclePosition](#message-vehicleposition) | Conditionally required | One | Data about the realtime position of a vehicle. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. |
 | **alert** | [Alert](#message-alert) | Conditionally required | One | Data about the realtime alert. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. |
 | **shape** | [Shape](#message-shape) | Conditionally required | One | Data about the realtime added shapes, such as for a detour. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **stop** | [Stop](#message-stop) | Conditionally required | One | A new stop added to the feed dynamically. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **trip_modifications** | [TripModifications)(#message-tripmodifications) | Conditionally required | One | List of trips affected by a particular modifications, such as a detour. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 
 
 ## _message_ TripUpdate
