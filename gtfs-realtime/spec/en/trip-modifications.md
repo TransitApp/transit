@@ -23,7 +23,7 @@ The scheduled stop times of each replacement trip are created from those of the 
 
 * A TripUpdate SHOULD be provided using a `ModifiedTripSelector` inside the TripUpdate's `TripDescriptor`. 
     * When the TripUpdate refers to the replacement trip, the consumer should behave as if the static GTFS would have been modified with the TripModifications (e.g. `arrival_time`, `departure_time`, `stop_sequence`, `stop_id` on replacement stops).
-    * When providing a `ModifiedTripSelector`, the other fields of the `TripDescriptor` MUST be left empty, to avoid confusion by consumers that aren't looking for the `ModifiedTripSelector` value. 
+    * When providing a `ModifiedTripSelector`, the `trip_id`, `route_id`, `direction_id`, `start_time`, `start_date` fields of the `TripDescriptor` MUST be left empty, to avoid confusion by consumers that aren't looking for the `ModifiedTripSelector` value. 
     * TripUpdate feeds providing updates with `ModifiedTripSelector` SHOULD also include a TripUpdate targeting clients that don't support TripModifications. In other words, there should be two TripUpdates: one for clients with modified trips (with `TripModifications`) and one for clients with the originial unmodified GTFS (without `TripModifications`).
     * Providing a TripUpdate with a `ModifiedTripSelector` is the only way to create predictions at replacement stops.
 * If no such TripUpdate is found, TripUpdates for the original `trip_id` will apply to the modified trip. 
@@ -34,7 +34,7 @@ The scheduled stop times of each replacement trip are created from those of the 
 
 A `Modification` message describes changes to each affected trip starting at `start_stop_selector`. There can be zero, one, or more than one stop time(s) replaced by a `Modification`. The spans of the modifications MUST not overlap. Spans may not be contiguous; in this case the two modifications MUST be merged into one.  These stop times are replaced with a new stop time for each replacement stop described by `replacement_stops`.
 
-The sequence of `replacement_stops` may be of arbitrary length. For example, 3 stops could be replaced by 2, 4, or 0 stops as the situation may require.
+The sequence of `replacement_stops` may be of arbitrary length. For example, 3 stops could be replaced by 2, 4, or 0 stops as the situation may require. 
 
 ![](images/trip_modification.png)
 
