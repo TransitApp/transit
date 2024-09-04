@@ -483,6 +483,8 @@ The relation between this trip and the static schedule. If a trip is done in acc
 
 ## _message_ ModifiedTripSelector
 
+When a service is affected by a trip modification, `ModifiedTripSelector` is used to select some trip. More detail in the [Trip Modification](https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/trip-modifications.md#linkage-to-tripupdates) specification.
+
 **Values**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
