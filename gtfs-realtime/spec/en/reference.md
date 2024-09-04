@@ -489,6 +489,8 @@ The relation between this trip and the static schedule. If a trip is done in acc
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 | **modifications_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The `id` of the `FeedEntity` in which the contained `TripModifications` object affects this trip.
 | **affected_trip_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The `trip_id` from the GTFS feed that is modified by the `modifications_id`
+| **start_time** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The `trip_id` from the GTFS feed that is modified by the `modifications_id`
+| **start_date** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The `trip_id` from the GTFS feed that is modified by the `modifications_id`
 
 ## _message_ VehicleDescriptor
 
