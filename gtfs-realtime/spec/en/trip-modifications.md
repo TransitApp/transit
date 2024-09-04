@@ -34,7 +34,9 @@ The scheduled stop times of each replacement trip are created from those of the 
 
 A `Modification` message describes changes to each affected trip starting at `start_stop_selector`. There can be zero, one, or more than one stop time(s) replaced by a `Modification`. The spans of the modifications MUST not overlap. Spans may not be contiguous; in this case the two modifications MUST be merged into one.  These stop times are replaced with a new stop time for each replacement stop described by `replacement_stops`.
 
-The sequence of `replacement_stops` may be of arbitrary length. For example, 3 stops could be replaced by 2, 4, or 0 stops as the situation may require.
+The sequence of `replacement_stops` may be of arbitrary length. For example, 3 stops could be replaced by 2, 4, or 0 stops as the situation may require. 
+
+It's allowed to replace a stop with a `ReplacementStop` that is the same as in the schedule if some other value are changing (like `dwell_time` `travel_time_to_stop`). 
 
 ![](images/trip_modification.png)
 
@@ -50,7 +52,7 @@ Each `ReplacementStop` message defines a stop that will now be visited by the tr
 
 When `travel_time_to_stop` is specified, the `arrival_time` is calculated from a reference stop in the original trip, plus the offset in `travel_time_to_stop`. Otherwise, the `arrival_time` can be be interpolated based on the total duration of the modification in the original trip.
 
-The `departure_time` always equals the `arrival_time`.
+The dwell time can be defined with the `dwell_time` field, and by default it's 0.
 
 The optional fields of [`stop_times.txt`](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stop_timestxt) in the (CSV) GTFS specification are all set to their default values.
 
