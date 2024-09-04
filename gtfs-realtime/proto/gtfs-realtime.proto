@@ -849,7 +849,10 @@ message TripDescriptor {
     // The trip_id from the GTFS feed that is modified by the modifications_id
     optional string affected_trip_id = 2;
 
+    // The initially scheduled start time of this trip instance, applied to the frequency based modified trip. Same definition as start_time in TripDescriptor.
     optional string start_time = 3;
+
+    // The start date of this trip instance in YYYYMMDD format, applied to the modified trip. Same definition as start_date in TripDescriptor.
     optional string start_date = 4;
 
     // The extensions namespace allows 3rd-party developers to extend the

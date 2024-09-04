@@ -55,6 +55,7 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
         *   [VehiclePosition](#message-vehicleposition)
             *   [TripDescriptor](#message-tripdescriptor)
                 *   [ScheduleRelationship](#enum-schedulerelationship-1)
+                *   [ModifiedTripSelector](#message-modifiedtripselector)
             *   [VehicleDescriptor](#message-vehicledescriptor)
                 *   [WheelchairAccessible](#enum-wheelchairaccessible)
             *   [Position](#message-position)
@@ -482,15 +483,13 @@ The relation between this trip and the static schedule. If a trip is done in acc
 
 ## _message_ ModifiedTripSelector
 
-
-
 **Values**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 | **modifications_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The `id` of the `FeedEntity` in which the contained `TripModifications` object affects this trip.
 | **affected_trip_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The `trip_id` from the GTFS feed that is modified by the `modifications_id`
-| **start_time** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The `trip_id` from the GTFS feed that is modified by the `modifications_id`
-| **start_date** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The `trip_id` from the GTFS feed that is modified by the `modifications_id`
+| **start_time** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The initially scheduled start time of this trip instance, applied to the frequency based modified trip. Same definition as **start_time** in [TripDescriptor](#message-tripdescriptor).
+| **start_date** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One |  The start date of this trip instance in YYYYMMDD format, applied to the modified trip. Same definition as **start_date** in [TripDescriptor](#message-tripdescriptor).
 
 ## _message_ VehicleDescriptor
 
