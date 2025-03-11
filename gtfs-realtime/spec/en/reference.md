@@ -589,7 +589,7 @@ Describes the physical path that a vehicle takes when the shape is not part of t
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
 | **shape_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One |  Identifier of the shape. Must be different than any `shape_id` defined in the (CSV) GTFS. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-| **encoded_polyline** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | Encoded polyline representation of the shape. This polyline must contain at least two points. For more information about encoded polylines, see https://developers.google.com/maps/documentation/utilities/polylinealgorithm <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **encoded_polyline** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | Encoded polyline representation of the shape. Encoded polyline representation of the shape. This polyline must contain at least two points and represent the full shape of the trip where it's used. For more information about encoded polylines, see https://developers.google.com/maps/documentation/utilities/polylinealgorithm <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 
 ## _message_ Stop
 
