@@ -108,8 +108,6 @@ message FeedEntity {
   optional TripUpdate trip_update = 3;
   optional VehiclePosition vehicle = 4;
   optional Alert alert = 5;
-
-  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional Shape shape = 6;
   optional Stop stop = 7;
   optional TripModifications trip_modifications = 8;
@@ -1144,7 +1142,6 @@ message Stop {
   extensions 9000 to 9999;
 }
 
-// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
 message TripModifications {
   // A `Modification` message replaces a span of n stop times from each affected trip starting at `start_stop_selector`.
   message Modification {
@@ -1167,6 +1164,7 @@ message TripModifications {
     repeated ReplacementStop replacement_stops = 4;
 
     // An `id` value from the `FeedEntity` message that contains the `Alert` describing this Modification for user-facing communication.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional string service_alert_id = 5;
 
     // This timestamp identifies the moment when the modification has last been changed.
@@ -1222,7 +1220,6 @@ message TripModifications {
   extensions 9000 to 9999;
 }
 
-// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
 // Select a stop by stop sequence or by stop_id. At least one of the two values must be provided.
 message StopSelector {
   // Must be the same as in stop_times.txt in the corresponding GTFS feed.
@@ -1239,7 +1236,6 @@ message StopSelector {
   extensions 9000 to 9999;
 }
 
-// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
 message ReplacementStop {
   // The difference in seconds between the arrival time at this stop and the arrival time at the reference stop. The reference stop is the stop prior to start_stop_selector. If the modification begins at the first stop of the trip, then the first stop of the trip is the reference stop.
   // This value MUST be monotonically increasing and may only be a negative number if the first stop of the original trip is the reference stop.

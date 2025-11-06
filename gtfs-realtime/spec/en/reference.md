@@ -135,9 +135,9 @@ A definition (or update) of an entity in the transit feed. If the entity is not 
 | **trip_update** | [TripUpdate](#message-tripupdate) | Conditionally required | One | Data about the realtime departure delays of a trip.  At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. |
 | **vehicle** | [VehiclePosition](#message-vehicleposition) | Conditionally required | One | Data about the realtime position of a vehicle. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. |
 | **alert** | [Alert](#message-alert) | Conditionally required | One | Data about the realtime alert. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. |
-| **shape** | [Shape](#message-shape) | Conditionally required | One | Data about the realtime added shapes, such as for a detour. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-| **stop** | [Stop](#message-stop) | Conditionally required | One | A new stop added to the feed dynamically. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-| **trip_modifications** | [TripModifications)(#message-tripmodifications) | Conditionally required | One | List of trips affected by a particular modifications, such as a detour. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **shape** | [Shape](#message-shape) | Conditionally required | One | Data about the realtime added shapes, such as for a detour. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. |
+| **stop** | [Stop](#message-stop) | Conditionally required | One | A new stop added to the feed dynamically. |
+| **trip_modifications** | [TripModifications](#message-tripmodifications) | Conditionally required | One | List of trips affected by a particular modifications, such as a detour.  |
 
 
 ## _message_ TripUpdate
@@ -655,8 +655,6 @@ Represents a new Stop added to the feed dynamically. All fields are as described
 ## _message_ TripModifications
 
 A `TripModifications` message identifies a list of similar trips which are all affected by particular modifications, such as a detour.
-
-<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
  
 [More about Trip Modifications...](trip-modifications.md)
 
@@ -673,8 +671,6 @@ A `TripModifications` message identifies a list of similar trips which are all a
 
 A `Modification` message describes changes to each affected trip starting at `start_stop_selector`.
 
-<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
-
 ![](images/trip_modification.png)
 _An example showing the effect of a modification on a particular trip. This modification may also be applied to several other trips._
 
@@ -690,14 +686,13 @@ _Propagated detour delays affect all stops following the end of a modification. 
 | **end_stop_selector** | [StopSelector](#message-stopselector) | Conditionally required | One | The stop selector of the last stop of the original trip that is to be affected by this modification. The selection is inclusive, so if only one stop_time is replaced by that modification, `start_stop_selector` and `end_stop_selector` must be equivalent. If no stop_time is replaced, `end_stop_selector` must not be provided. It's otherwise required.  |
 | **propagated_modification_delay** | [int32](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The number of seconds of delay to add to all departure and arrival times subsequent to the last stop inserted by a modification. If a modification affects only the shape (i.e. neither `end_stop_selector` nor `replacement_stops` are provided), then the delay propagation begins at the subsequent stop after `start_stop_selector`. Can be a positive or negative number. If multiple modifications apply to the same trip, the delays accumulate as the trip advances. <br/><br/>If the value is not supplied, consumers MAY interpolate or infer the `propagated_modification_delay` based on other data.  |
 | **replacement_stops** | [ReplacementStop](#message-replacementstop) | Optional | Many | A list of replacement stops, replacing those of the original trip. The length of the new stop times may be less, the same, or greater than the number of replaced stop times. |
-| **service_alert_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | An `id` value from the `FeedEntity` message that contains the `Alert` describing this Modification for user-facing communication. |
+| **service_alert_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | An `id` value from the `FeedEntity` message that contains the `Alert` describing this Modification for user-facing communication.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+ |
 | **last_modified_time** | [uint64](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | This timestamp identifies the moment when the modification has last been changed. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
 
 ## _message_ StopSelector
 
 Selector for a stop. Either by `stop_id` or `stop_sequence`. At least one of the two values must be provided. 
-
-<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
 **Fields**
 
@@ -710,8 +705,6 @@ Selector for a stop. Either by `stop_id` or `stop_sequence`. At least one of the
 
 List of selected trips with an associated shape.
 
-<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
-
 **Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
@@ -722,8 +715,6 @@ List of selected trips with an associated shape.
 ## _message_ ReplacementStop
 
 Each `ReplacementStop` message defines a stop that will now be visited by the trip, and optionally specifies the estimated travel time to the stop. 
-
-<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
 ![](images/first_stop_reference.png)
 _If a modification affects the first stop of the trip, that stop also serves as the reference stop of the modification._
