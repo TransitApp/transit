@@ -35,6 +35,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [frequencies.txt](#frequenciestxt)
     -   [transfers.txt](#transferstxt)
     -   [pathways.txt](#pathwaystxt)
+    -   [carriage_positions.txt](#carriage_positionstxt)
     -   [levels.txt](#levelstxt)
     -   [location_groups.txt](#location_groupstxt)
     -   [location_group_stops.txt](#location_group_stopstxt)
@@ -139,6 +140,7 @@ This specification defines the following files:
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
+|  [carriage_positions.txt](#carriage_positionstxt)  | Optional | Optimal carriage positioning for transfers and platform exits. |
 |  [levels.txt](#levelstxt)  | **Conditionally Required** | Levels within stations.<br><br>Conditionally Required:<br>- **Required** when describing pathways with elevators (`pathway_mode=5`).<br>- Optional otherwise. |
 |  [location_groups.txt](#location_groupstxt)  | Optional | A group of stops that together indicate locations where a rider may request pickup or drop off. |
 |  [location_group_stops.txt](#location_group_stopstxt)  | Optional | Rules to assign stops to location groups. |
@@ -746,6 +748,27 @@ Pathways are intended to exhaustively define the internal access graph of a stat
 | `min_width` | Positive float | Optional | Minimum width of the pathway in meters.<br><br>This field is recommended if the minimum width is less than 1 meter.|
 | `signposted_as` | Text | Optional | Public facing text from physical signage that is visible to riders.<br><br> May be used to provide text directions to riders, such as 'follow signs to '. The text in `singposted_as` should appear exactly how it is printed on the signs.<br><br>When the physical signage is multilingual, this field may be populated and translated following the example of `stops.stop_name` in the field definition of `feed_info.feed_lang`.|
 | `reversed_signposted_as` | Text | Optional | Same as `signposted_as`, but when the pathway is used from the `to_stop_id` to the `from_stop_id`.|
+
+### carriage_positions.txt
+
+File: **Optional**
+
+Primary key (`from_stop_id`, `to_stop_id`, `facility_type`)
+
+Defines optimal carriage positioning for transfers and platform exit access. Enables trip planners to recommend which carriage passengers should board to minimize walking time at their destination.
+
+While [pathways.txt](#pathwaystxt) handles navigation within stations, it does not address where to stand on the platform before boarding. This file complements pathways by providing carriage-level boarding recommendations.
+
+Producers MAY use logical carriage divisions when exact carriage positions are unavailable. For example, `carriage_count=3` with `recommended_carriage=1` indicates "board near the front" regardless of actual vehicle length.
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+|  `from_stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies the platform where the passenger boards. Must reference a stop with `location_type=0`. |
+|  `to_stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies the destination: a transfer platform, station entrance, or exit. Must reference a stop with `location_type=0` or `location_type=2`. |
+|  `recommended_carriage` | Non-negative integer | **Required** | The recommended carriage to board, 1-indexed from the front of the vehicle. May represent a logical position rather than exact carriage number. Must be less than or equal to `carriage_count`. |
+|  `carriage_count` | Non-negative integer | **Required** | Number of carriage positions in this configuration. May represent logical divisions (e.g., 3 for front/middle/back) rather than actual carriage count. |
+|  `front_car_position` | Enum | **Required** | Platform side where the front carriage (carriage 1) stops, from the perspective of a passenger facing the track. Valid options are:<br><br>`left` - Front carriage stops on the left side of the platform.<br>`right` - Front carriage stops on the right side of the platform. |
+|  `facility_type` | Enum | Optional | Type of facility at the destination. Valid options are:<br><br>`elevator` - Elevator access.<br>`escalator` - Escalator access.<br>`stairs` - Stair access.<br><br>May be empty if the destination is another platform or general exit. |
 
 ### levels.txt
 
