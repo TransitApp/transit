@@ -768,7 +768,7 @@ Producers MAY use logical carriage divisions when exact carriage positions are u
 |  `recommended_carriage` | Non-negative integer | **Required** | The recommended carriage to board, 1-indexed from the front of the vehicle. May represent a logical position rather than exact carriage number. Must be less than or equal to `carriage_count`. |
 |  `carriage_count` | Non-negative integer | **Required** | Number of carriage positions in this configuration. May represent logical divisions (e.g., 3 for front/middle/back) rather than actual carriage count. |
 |  `front_car_position` | Enum | **Required** | Platform side where the front carriage (carriage 1) stops at `from_stop_id`, from the perspective of a passenger facing the track. Valid options are:<br><br>`left` - Front carriage stops on the left side of the platform.<br>`right` - Front carriage stops on the right side of the platform. |
-|  `facility_type` | Enum | Optional | Type of facility available close to the recommended carriage at with destination `to_stop_id`. Valid options are:<br><br>`elevator` - Elevator access.<br>`escalator` - Escalator access.<br>`stairs` - Stair access.<br><br>May be empty if the destination is another platform or general exit. |
+|  `facility_type` | Enum | Optional | Type of facility available close to the recommended carriage with destination `to_stop_id`. Valid options are:<br><br>`elevator` - Elevator access.<br>`escalator` - Escalator access.<br>`stairs` - Stair access.<br><br>May be empty if the destination is another platform or general exit. |
 
 ### levels.txt
 
