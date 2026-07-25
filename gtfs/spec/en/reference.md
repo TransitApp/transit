@@ -777,7 +777,7 @@ Recommendations in [carriage_positions.txt](#carriage_positionstxt) are relative
 |  `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies the platform.<br><br>Must contain a `stop_id` that identifies a platform (`location_type=0` or empty).<br><br>Values for `stop_id` that identify stations (`location_type=1`), entrances/exits (`location_type=2`), generic nodes (`location_type=3`) or boarding areas (`location_type=4`) are forbidden. |
 |  `front_car_position` | Enum | **Required** | Platform side where the front carriage stops at, from the perspective of a passenger facing the track. Valid options are:<br><br>`0` - Front carriage stops on the left side of the platform.<br>`1` - Front carriage stops on the right side of the platform. |
 |  `route_id` | Foreign ID referencing `routes.route_id` | Optional | Specifies per route which side of the platform the front car stops at. Can be defined in combination with `direction_id`. |
-|  `direction_id` | Enum | Optional | Specifies per trip direction which side of the platform the front car stops at. Can be defined in combination with `route_id`. Valid options are:<br><br>`0` - Travel in one direction (e.g., outbound travel).<br>`1` - Travel in the opposite direction (e.g., inbound travel). |
+|  `direction_id` | Enum | Optional | Specifies per trip direction which side of the platform the front car stops at. Can be defined in combination with `route_id`.<br><br>Values are the same as [trips.txt](#tripstxt) `direction_id`. |
 
 ### carriage_positions.txt
 
