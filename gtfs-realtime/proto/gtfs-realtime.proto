@@ -625,7 +625,18 @@ message Alert {
   // Time when the alert should be shown to the user. If missing, the
   // alert will be shown as long as it appears in the feed.
   // If multiple ranges are given, the alert will be shown during all of them.
-  repeated TimeRange active_period = 1;
+  // Should not be used - for backwards-compatibility only.
+  repeated TimeRange active_period = 1 [deprecated = true];
+
+  // Time when the alert should be shown to the user strictly for informative reasons.
+  // If missing, the consuming application can decide when it's appropriate to be shown.
+  // If multiple ranges are given, the alert will be shown during all of them.
+  repeated TimeRange communication_period = 2;
+
+  // Time when the services are affected by the alert. If communication_period is specified,
+  // every time interval in impact_period must be fully contained within at least
+  // one time interval of communication_period.
+  repeated TimeRange impact_period = 3;
 
   // Entities whose users we should notify of this alert.
   repeated EntitySelector informed_entity = 5;
@@ -644,6 +655,7 @@ message Alert {
     CONSTRUCTION = 10;
     POLICE_ACTIVITY = 11;
     MEDICAL_EMERGENCY = 12;
+    SPECIAL_EVENT = 13;     // A special one-time or recurring event such as a parade, festival, performance, farmers market, or sporting event.
   }
   optional Cause cause = 6 [default = UNKNOWN_CAUSE];
 
@@ -805,7 +817,7 @@ message TripDescriptor {
   // The initially scheduled start time of this trip instance.
   // When the trip_id corresponds to a non-frequency-based trip, this field
   // should either be omitted or be equal to the value in the GTFS feed. When
-  // the trip_id correponds to a frequency-based trip, the start_time must be
+  // the trip_id corresponds to a frequency-based trip, the start_time must be
   // specified for trip updates and vehicle positions. If the trip corresponds
   // to exact_times=1 GTFS record, then start_time must be some multiple
   // (including zero) of headway_secs later than frequencies.txt start_time for
@@ -1149,7 +1161,7 @@ message TripModifications {
   // A `Modification` message replaces a span of n stop times from each affected trip starting at `start_stop_selector`.
   message Modification {
     // The stop selector of the first stop_time of the original trip that is to be affected by this modification.
-    // Used in conjuction with `end_stop_selector`. 
+    // Used in conjunction with `end_stop_selector`. 
     // `start_stop_selector` is required and is used to define the reference stop used with `travel_time_to_stop`.
     optional StopSelector start_stop_selector = 1;
 

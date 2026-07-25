@@ -363,6 +363,8 @@ An alert, indicating some sort of incident in the public transit network.
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
 | **active_period** | [TimeRange](#message-timerange) | Optional | Many | Time when the alert should be shown to the user. If missing, the alert will be shown as long as it appears in the feed. If multiple ranges are given, the alert will be shown during all of them. |
+| **communication_period** | [TimeRange](#message-timerange) | Optional | Many | Time when the alert should be shown to the user strictly for informative reasons. If missing, the consuming application can decide when it's appropriate to be shown. If multiple ranges are given, the alert will be shown during all of them.|
+| **impact_period** | [TimeRange](#message-timerange) | Optional | Many | Time when the services are affected by the alert. If communication_period is specified, every time interval in impact_period must be fully contained within at least one time interval of communication_period.|
 | **informed_entity** | [EntitySelector](#message-entityselector) | Required | Many | Entities whose users we should notify of this alert.  At least one informed_entity must be provided. |
 | **cause** | [Cause](#enum-cause) | Conditionally Required | One | If cause_detail is included, then Cause must also be included.
 | **cause_detail** | [TranslatedString](#message-translatedstring) | Optional | One | Description of the cause of the alert that allows for agency-specific language; more specific than the Cause. If cause_detail is included, then Cause must also be included. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
@@ -398,6 +400,7 @@ Cause of this alert.
 | **CONSTRUCTION** |
 | **POLICE_ACTIVITY** |
 | **MEDICAL_EMERGENCY** |
+| **SPECIAL_EVENT** |
 
 ## _enum_ Effect
 
@@ -716,7 +719,7 @@ List of selected trips with an associated shape.
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **trip_ids** | [uint32](https://protobuf.dev/programming-guides/proto2/#scalar) | Many | One | A list of trip_id from the original (CSV) GTFS that are affected by the containing replacement. Need to contain at least one trip_id. A `TripUpdate` with `schedule_relationship=REPLACEMENT` must not already exist for the trip. |
+| **trip_ids** | [uint32](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | Many | A list of trip_id from the original (CSV) GTFS that are affected by the containing replacement. Need to contain at least one trip_id. A `TripUpdate` with `schedule_relationship=REPLACEMENT` must not already exist for the trip. |
 | **shape_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The ID of the new shape for the modified trips in this SelectedTrips. May refer to a new shape added using a `Shape` message in the same GTFS-RT feed, or to an existing shape defined in the GTFS-Static feed’s shapes.txt. If it refers to a `Shape` entity in the real-time feed, the value of this field should be the one of the `shape_id` inside the entity, and _not_ the `id` of `FeedEntity`. |
 
 ## _message_ ReplacementStop
