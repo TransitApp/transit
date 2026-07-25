@@ -755,20 +755,22 @@ Pathways are intended to exhaustively define the internal access graph of a stat
 
 File: **Optional**
 
-Primary key (`stop_id`)
+Primary key (`stop_id`, `route_id`, `direction_id`)
 
-Defines which side of the platform the front carriage stops at. This information is used alongside [carriage_positions.txt](#carriage_positionstxt) to determine boarding recommendations. When the departure and arrival stations have different front car directions, trip planners can mirror the recommended carriage accordingly.
+Defines which side of the platform the front carriage stops at. This platform side applies by default to all trips of any routes and directions, unless `route_id` and/or `direction_id` are provided. Both fields allow modeling special configurations, e.g. a platform located on a bidirectional single-track section. This information is used alongside [carriage_positions.txt](#carriage_positionstxt) to determine boarding recommendations. When the departure and arrival stations have different front car directions, trip planners can mirror the recommended carriage accordingly.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 |  `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies the platform. Must reference a stop with `location_type=0`. |
-|  `front_car_position` | Enum | **Required** | Platform side where the front carriage (carriage 0) stops, from the perspective of a passenger facing the track. Valid options are:<br><br>`left` - Front carriage stops on the left side of the platform.<br>`right` - Front carriage stops on the right side of the platform. |
+|  `front_car_position` | Enum | **Required** | Platform side where the front carriage (carriage 0) stops at, from the perspective of a passenger facing the track. Valid options are:<br><br>`left` - Front carriage stops on the left side of the platform.<br>`right` - Front carriage stops on the right side of the platform. |
+|  `route_id` | Foreign ID referencing `routes.route_id` | Optional | Specifies per route which side of the platform the front car stops at. Can be defined in combination with `direction_id`. |
+|  `direction_id` | Enum | Optional | Specifies per trip direction which side of the platform the front car stops at. Can be defined in combination with `route_id`. Valid options are:<br><br>`0` - Travel in one direction (e.g., outbound travel).<br>`1` - Travel in the opposite direction (e.g., inbound travel). |
 
 ### carriage_positions.txt
 
 File: **Optional**
 
-Primary key (`stop_id`, `to_stop_id`, `facility_type`)
+Primary key (`stop_id`, `to_stop_id`, `facility_type`, `carriage_count`)
 
 Defines optimal carriage positioning for transfers and platform exit access. Enables trip planners to recommend which carriage passengers should board to minimize walking time at their destination.
 
