@@ -141,7 +141,7 @@ This specification defines the following files:
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
-|  [station_directions.txt](#station_directionstxt)  | Optional | Platform direction of the front carriage at each stop. |
+|  [station_directions.txt](#station_directionstxt)  | **Conditionally Required** | Platform direction of the front carriage at each stop.<br><br>Conditionally Required:<br>- **Required** when [carriage_positions.txt](#carriage_positionstxt) is provided.<br>- Optional otherwise. |
 |  [carriage_positions.txt](#carriage_positionstxt)  | Optional | Optimal carriage positioning for transfers and platform exits. |
 |  [levels.txt](#levelstxt)  | **Conditionally Required** | Levels within stations.<br><br>Conditionally Required:<br>- **Required** when describing pathways with elevators (`pathway_mode=5`).<br>- Optional otherwise. |
 |  [location_groups.txt](#location_groupstxt)  | Optional | A group of stops that together indicate locations where a rider may request pickup or drop off. |
@@ -762,18 +762,20 @@ Pathways are intended to exhaustively define the internal access graph of a stat
 
 ### station_directions.txt
 
-File: **Optional**
+File: **Conditionally Required**
 
 Primary key (`stop_id`, `route_id`, `direction_id`)
 
-Defines which side of the platform the front carriage stops at. This platform side applies by default to all trips of any routes and directions, unless `route_id` and/or `direction_id` are provided. Both fields allow modeling special configurations, e.g. a platform located on a bidirectional single-track section. This information is used alongside [carriage_positions.txt](#carriage_positionstxt) to determine boarding recommendations.
+Defines which side of the platform the front carriage stops at. This information is used alongside [carriage_positions.txt](#carriage_positionstxt) to determine boarding recommendations.
 
-Recommendations in [carriage_positions.txt](#carriage_positionstxt) are relative to the front of the train at the arrival platform, but passengers board at the departure platform. When the two platforms have opposite `front_car_position` values, trip planners mirror the recommendation with `mirrored_carriage = carriage_count - recommended_carriage - 1`. For example, a `recommended_carriage=1` out of `carriage_count=8` at the arrival platform becomes carriage 6 at the departure platform: the same physical position, counted from the other end.
+A record with empty `route_id` and `direction_id` defines the platform side for all trips serving the platform. Records that specify `route_id` and/or `direction_id` take priority over that default for the trips they match, which allows modeling special configurations, e.g. a platform located on a bidirectional single-track section. When several records match a trip, the most specific one applies, in the following order: (`route_id`, `direction_id`), then `route_id`, then `direction_id`, then the default record.
+
+Recommendations in [carriage_positions.txt](#carriage_positionstxt) are relative to the front of the train at the arrival platform, but passengers board at the departure platform. When the two platforms have opposite `front_car_position` values, trip planners mirror the recommendation with `mirrored_carriage = carriage_count - recommended_carriage - 1`. For example, a `recommended_carriage=1` out of `carriage_count=8` at the arrival platform becomes carriage 6 at the departure platform: the same physical position, counted from the other end. Data consumers should only apply a recommendation when `front_car_position` is known for both the departure and the arrival platform.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies the platform. Must reference a stop with `location_type=0`. |
-|  `front_car_position` | Enum | **Required** | Platform side where the front carriage (carriage 0) stops at, from the perspective of a passenger facing the track. Valid options are:<br><br>`left` - Front carriage stops on the left side of the platform.<br>`right` - Front carriage stops on the right side of the platform. |
+|  `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies the platform.<br><br>Must contain a `stop_id` that identifies a platform (`location_type=0` or empty).<br><br>Values for `stop_id` that identify stations (`location_type=1`), entrances/exits (`location_type=2`), generic nodes (`location_type=3`) or boarding areas (`location_type=4`) are forbidden. |
+|  `front_car_position` | Enum | **Required** | Platform side where the front carriage (carriage 0) stops at, from the perspective of a passenger facing the track. Valid options are:<br><br>`0` - Front carriage stops on the left side of the platform.<br>`1` - Front carriage stops on the right side of the platform. |
 |  `route_id` | Foreign ID referencing `routes.route_id` | Optional | Specifies per route which side of the platform the front car stops at. Can be defined in combination with `direction_id`. |
 |  `direction_id` | Enum | Optional | Specifies per trip direction which side of the platform the front car stops at. Can be defined in combination with `route_id`. Valid options are:<br><br>`0` - Travel in one direction (e.g., outbound travel).<br>`1` - Travel in the opposite direction (e.g., inbound travel). |
 
@@ -791,11 +793,11 @@ Producers MAY use logical carriage divisions when exact carriage positions are u
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies the arrival platform. Must reference a stop with `location_type=0`. |
-|  `to_stop_id` | Foreign ID referencing `stops.stop_id` | Optional | Identifies a specific destination: a transfer platform, station entrance, or exit. Must reference a stop with `location_type=0` or `location_type=2`. When empty, the recommendation applies as a general default for the station. When provided, it gives a destination-specific recommendation that takes priority over the general default. |
+|  `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies the arrival platform.<br><br>Must contain a `stop_id` that identifies a platform (`location_type=0` or empty).<br><br>Values for `stop_id` that identify stations (`location_type=1`), entrances/exits (`location_type=2`), generic nodes (`location_type=3`) or boarding areas (`location_type=4`) are forbidden. |
+|  `to_stop_id` | Foreign ID referencing `stops.stop_id` | Optional | Identifies a specific destination, either a transfer platform or a station entrance/exit.<br><br>Must contain a `stop_id` that identifies a platform (`location_type=0` or empty) or an entrance/exit (`location_type=2`). Values for `stop_id` that identify stations (`location_type=1`), generic nodes (`location_type=3`) or boarding areas (`location_type=4`) are forbidden.<br><br>When empty, the recommendation applies as a general default for the station. When provided, it gives a destination-specific recommendation that takes priority over the general default. |
 |  `recommended_carriage` | Non-negative integer | **Required** | The recommended carriage to board, 0-indexed from the front of the vehicle. May represent a logical position rather than exact carriage number. Must be less than `carriage_count`. |
 |  `carriage_count` | Positive integer | **Required** | Number of carriage positions in this configuration. May represent logical divisions (e.g., 3 for front/middle/back) rather than actual carriage count. |
-|  `facility_type` | Enum | Optional | Type of facility available close to the recommended carriage. Valid options are:<br><br>`elevator` - Elevator access.<br>`escalator` - Escalator access.<br>`stairs` - Stair access.<br><br>May be empty if the destination is another platform or general exit. |
+|  `facility_type` | Enum | Optional | Type of facility available close to the recommended carriage. Valid options are a subset of [pathways.txt](#pathwaystxt) `pathway_mode`:<br><br>`2` - Stairs.<br>`4` - Escalator.<br>`5` - Elevator.<br><br>May be empty when the recommendation is not tied to a specific facility. |
 
 ### levels.txt
 
