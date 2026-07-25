@@ -787,7 +787,7 @@ Primary key (`stop_id`, `to_stop_id`, `facility_type`, `carriage_count`)
 
 Defines optimal carriage positioning for transfers and platform exit access. Enables trip planners to recommend which carriage passengers should board to minimize walking time at their destination.
 
-A record describes the moment a rider steps off a train: `stop_id` is the platform where the rider alights and `to_stop_id` is where the rider continues to, while the recommendation itself is applied earlier, when the rider boards.
+A record describes the moment a rider steps off a train: `stop_id` is the platform where the rider alights, and `to_stop_id` is where the rider continues to, either another platform when transferring or an entrance/exit when leaving the station. The recommendation itself is applied earlier, when the rider boards.
 
 While [pathways.txt](#pathwaystxt) handles navigation within stations, it does not address where to stand on the platform before boarding. This file complements pathways by providing carriage-level boarding recommendations.
 
