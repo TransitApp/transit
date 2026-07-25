@@ -766,7 +766,9 @@ File: **Optional**
 
 Primary key (`stop_id`, `route_id`, `direction_id`)
 
-Defines which side of the platform the front carriage stops at. This platform side applies by default to all trips of any routes and directions, unless `route_id` and/or `direction_id` are provided. Both fields allow modeling special configurations, e.g. a platform located on a bidirectional single-track section. This information is used alongside [carriage_positions.txt](#carriage_positionstxt) to determine boarding recommendations. When the departure and arrival stations have different front car directions, trip planners can mirror the recommended carriage accordingly.
+Defines which side of the platform the front carriage stops at. This platform side applies by default to all trips of any routes and directions, unless `route_id` and/or `direction_id` are provided. Both fields allow modeling special configurations, e.g. a platform located on a bidirectional single-track section. This information is used alongside [carriage_positions.txt](#carriage_positionstxt) to determine boarding recommendations.
+
+Recommendations in [carriage_positions.txt](#carriage_positionstxt) are relative to the front of the train at the arrival platform, but passengers board at the departure platform. When the two platforms have opposite `front_car_position` values, trip planners mirror the recommendation with `mirrored_carriage = carriage_count - recommended_carriage - 1`. For example, a `recommended_carriage=1` out of `carriage_count=8` at the arrival platform becomes carriage 6 at the departure platform: the same physical position, counted from the other end.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
