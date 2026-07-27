@@ -783,7 +783,7 @@ Recommendations in [carriage_positions.txt](#carriage_positionstxt) are relative
 
 File: **Optional**
 
-Primary key (`stop_id`, `to_stop_id`, `facility_type`, `carriage_count`)
+Primary key (`stop_id`, `to_stop_id`, `via_pathway_mode`, `carriage_count`)
 
 Defines optimal carriage positioning for transfers and platform exit access. Enables trip planners to recommend which carriage passengers should board to minimize walking time at their destination.
 
@@ -799,7 +799,7 @@ Producers MAY use logical carriage divisions when exact carriage positions are u
 |  `to_stop_id` | Foreign ID referencing `stops.stop_id` | Optional | Identifies a specific destination, either a transfer platform or a station entrance/exit.<br><br>Must contain a `stop_id` that identifies a platform (`location_type=0` or empty) or an entrance/exit (`location_type=2`). Values for `stop_id` that identify stations (`location_type=1`), generic nodes (`location_type=3`) or boarding areas (`location_type=4`) are forbidden.<br><br>Should belong to the same station (`stops.parent_station`) as `stop_id`, as the recommendation describes walking within a station, but may reference a location in another station when physically connected platforms are modeled separately.<br><br>When empty, the recommendation applies as a general default for the station. When provided, it gives a destination-specific recommendation that takes priority over the general default. |
 |  `recommended_carriage` | Positive integer | **Required** | The recommended carriage to board, numbered from the first carriage in the direction of travel, which has a value of `1`, as in GTFS-realtime `CarriageDetails.carriage_sequence`. May represent a logical position rather than an exact carriage number. Must be less than or equal to `carriage_count`. |
 |  `carriage_count` | Positive integer | **Required** | Number of carriage positions in this configuration. May represent logical divisions (e.g., 3 for front/middle/back) rather than actual carriage count. |
-|  `facility_type` | Enum | Optional | Type of facility available close to the recommended carriage. Valid options are a subset of [pathways.txt](#pathwaystxt) `pathway_mode`:<br><br>`2` - Stairs.<br>`4` - Escalator.<br>`5` - Elevator.<br><br>May be empty when the recommendation is not tied to a specific facility. |
+|  `via_pathway_mode` | Enum | Optional | Mode of the pathway the rider takes to reach `to_stop_id`, for which `recommended_carriage` is the closest carriage. Valid options are a subset of [pathways.txt](#pathwaystxt) `pathway_mode`:<br><br>`2` - Stairs.<br>`4` - Escalator.<br>`5` - Elevator.<br><br>Riders with different accessibility needs take different pathways out of the same platform, so a producer may publish one record per mode. When empty, the recommendation applies regardless of how the rider continues. |
 
 ### levels.txt
 
