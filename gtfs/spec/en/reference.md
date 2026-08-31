@@ -35,7 +35,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [frequencies.txt](#frequenciestxt)
     -   [transfers.txt](#transferstxt)
     -   [pathways.txt](#pathwaystxt)
-    -   [station_directions.txt](#station_directionstxt)
+    -   [platform_directions.txt](#platform_directionstxt)
     -   [carriage_positions.txt](#carriage_positionstxt)
     -   [levels.txt](#levelstxt)
     -   [location_groups.txt](#location_groupstxt)
@@ -141,7 +141,7 @@ This specification defines the following files:
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
-|  [station_directions.txt](#station_directionstxt)  | **Conditionally Required** | Platform direction of the front carriage at each stop.<br><br>Conditionally Required:<br>- **Required** when [carriage_positions.txt](#carriage_positionstxt) is provided.<br>- Optional otherwise. |
+|  [platform_directions.txt](#platform_directionstxt)  | **Conditionally Required** | Platform direction of the front carriage at each stop.<br><br>Conditionally Required:<br>- **Required** when [carriage_positions.txt](#carriage_positionstxt) is provided.<br>- Optional otherwise. |
 |  [carriage_positions.txt](#carriage_positionstxt)  | Optional | Optimal carriage positioning for transfers and platform exits. |
 |  [levels.txt](#levelstxt)  | **Conditionally Required** | Levels within stations.<br><br>Conditionally Required:<br>- **Required** when describing pathways with elevators (`pathway_mode=5`).<br>- Optional otherwise. |
 |  [location_groups.txt](#location_groupstxt)  | Optional | A group of stops that together indicate locations where a rider may request pickup or drop off. |
@@ -760,7 +760,7 @@ Pathways are intended to exhaustively define the internal access graph of a stat
 | `signposted_as` | Text | Optional | Public facing text from physical signage that is visible to riders.<br><br> May be used to provide text directions to riders, such as 'follow signs to '. The text in `singposted_as` should appear exactly how it is printed on the signs.<br><br>When the physical signage is multilingual, this field may be populated and translated following the example of `stops.stop_name` in the field definition of `feed_info.feed_lang`.|
 | `reversed_signposted_as` | Text | Optional | Same as `signposted_as`, but when the pathway is used from the `to_stop_id` to the `from_stop_id`.|
 
-### station_directions.txt
+### platform_directions.txt
 
 File: **Conditionally Required**
 
